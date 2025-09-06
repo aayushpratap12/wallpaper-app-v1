@@ -2,6 +2,7 @@ import { Entypo, Octicons } from '@expo/vector-icons'
 import { BlurView } from 'expo-blur'
 import * as FileSystem from 'expo-file-system'
 import { Image } from 'expo-image'
+import * as MediaLibrary from "expo-media-library"
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import * as Sharing from 'expo-sharing'
 import { useState } from 'react'
@@ -10,6 +11,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated'
 import Toast from 'react-native-toast-message'
 import { theme } from '../../constants/theme'
 import { hp, wp } from '../../helpers/common'
+
 
 const ImageScreen = () => {
 
@@ -69,21 +71,34 @@ const ImageScreen = () => {
     }
 
     const downloadFile = async () => {
-        try {
-            const { uri } = await FileSystem.downloadAsync(imageUrl, filePath);
-            setStatus('');
-            console.log('downloaded ', uri);
-            return uri;
+            try {
+                const { uri } = await FileSystem.downloadAsync(imageUrl, filePath);
 
-        } catch (err) {
+                // Ask for permission
+                const { status } = await MediaLibrary.requestPermissionsAsync();
+                if (status !== "granted") {
+                    Alert.alert("Permission required", "Please allow access to save images.");
+                    setStatus("");
+                    return null;
+                }
 
-            console.log('got error ', err.message);
-            setStatus('');
-            Alert.alert('Image ', err.message);
-            return null;
+                // Save image to gallery
+                const asset = await MediaLibrary.createAssetAsync(uri);
+                await MediaLibrary.createAlbumAsync("WallpaperApp", asset, false);
 
-        }
-    }
+                setStatus("");
+                showToast("Image saved to gallery!");
+                console.log("Saved to gallery:", uri);
+
+                return uri;
+              } catch (err) {
+                    console.log("got error ", err.message);
+                    setStatus("");
+                    Alert.alert("Image Error", err.message);
+                return null;
+            }
+         };
+
 
     const showToast = (message) => {
         Toast.show({
@@ -93,6 +108,8 @@ const ImageScreen = () => {
 
         });
     }
+
+    
 
     const toastConfig = {
         success: ({ text1, props, ...rest }) => (

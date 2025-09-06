@@ -218,11 +218,12 @@ const HomeScreen = () => {
                         <Feather name="search" size={24} color={theme.colors.neutral(0.4)} />
                     </View>
                     <TextInput placeholder='Search for images...'
-                        // value={search}
+                        placeholderTextColor={theme.colors.neutral(0.4)}   // 👈 makes placeholder gray
                         ref={searchInputRef}
                         onChangeText={handleTextDebounce}
-                        style={styles.searchInput}
+                        style={[styles.searchInput, { color: theme.colors.black }]}   // 👈 input text black
                     />
+
                     {
                         search && (
                             <Pressable
@@ -350,7 +351,8 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: theme.radius.sm,
         paddingVertical: 10,
-        fontSize: hp(1.9)
+        fontSize: hp(1.9),
+        color: theme.colors.black,
     },
     closeIcon: {
         //backgroundColor: theme.colors.neutral(0.1),
