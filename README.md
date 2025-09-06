@@ -1,4 +1,18 @@
-# Welcome to your Expo app 👋
+## **Wallpaper-app-v1**
+# Welcome to your Expo wallpaper-app. 
+
+
+App Screenshots
+
+  **Welcome Screen**
+<img src="./screenshots/welcome.jpg" alt="Search" width="300"/>
+ 
+** Home Screen**
+<img src="./screenshots/home.jpg" alt="Home" width="300"/>
+
+ **Filters Preview**
+<img src="./screenshots/filters.jpg" alt="Preview" width="300"/>
+
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
